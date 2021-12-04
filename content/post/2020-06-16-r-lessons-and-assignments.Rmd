@@ -1,0 +1,315 @@
+---
+title: R lessons and assignments
+author: Joydeep Chowdhury
+date: '2020-06-16'
+slug: r-lessons-and-assignments
+categories:
+  - R
+  - Statistics
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+Previously, you have learned simple manipulations of vectors and matrices in `R`, generating data from certain probability distributions, uses of `if..else` conditionals and looping constructs like `for` and `while`, and about constructing and invoking functions in `R`.
+
+Here, you shall learn about statistical models and graphical procedures in `R`, invoking functions from packages in `R`, and then using them to carry out the statistical procedures described in the slides sent by Prof. Amita Pal.
+
+# Statistical models in `R`
+
+Let `y`, `x1`, `x2` and `f` be vectors of the same length, where `y`, `x1` and `x2` are vectors of real numbers and `f` is a vector of factors. Suppose we want to construct a linear regression model with `y` as the response and `x1`, `x2` as the covariates. Then, we can represent that as a `formula` in `R`: `lm1 = y ~ x1 + x2`. Similarly, if we want to construct a one-way ANOVA model with `y` being the response and the classes being denoted by the factor vector `f`, the `formula` of that statistical model in `R` would be `lm2 = y ~ f`. Here, `lm1` and `lm2` are `R` objects of class `formula`. The `R` code to get the linear regression fit from these variables is
+```r
+linear_regression = lm(y ~ x1 + x2)
+```
+Similarly, the code for the ANOVA fit is
+```r
+anova = aov(y ~ f)
+```
+Note that the function `aov()` is only a wrapper to the function `lm()` for fitting linear models with covariates which are factors, the differences between them being the way the results of the fit are reported. This is due to the fact that the analysis of variance model is also a linear model with a special structure of the covariate. The `R` objects `linear_regression` and `anova` that are created after executing the above code, are of the type `list`, whose components contain the information on various features of the linear regression or the anova models, e.g., sums of squares, values of slope and intercept, etc.
+
+For further details on `formula` in `R`, see section 11.1 in the book *An Introduction to R*. Also, type `?formula` in your `R` console and press `enter`, which will open the help page for `formula` in `R`. For further details on `lm()` and `aov()`, see sections 11.2--11.4 in *An Introduction to R* and also their help pages: `?lm` and `?aov`.
+
+We shall demonstrate the linear regression and the ANOVA models in `R` later with examples.
+
+
+# Graphical procedures in `R`
+
+There is a plethora of graphical functions in `R`. We shall discuss and demonstrate a few of them.
+
+Perhaps the most ubiquitous of the graphical tools in `R` is the `plot()` function. In its most basic form, it works like this:
+```r
+plot(x, y)
+```
+Here, `x` and `y` are vectors of same length giving the x and y coordinates of the plot. The `plot()` function has a lot of optional arguments, using which one can set the type of the plot (points or line) (option: `type = 'p'` for points, `type = 'l'` for lines, etc.), the limits of the x axis and the y axis (options: `xlim` and `ylim`), labels of the axes (options: `xlab` and `ylab`), title of the plot (option: `main`), etc. One can add legends to a plot using the `legend()` function. After a plot is drawn, one can add further set of points or lines in it using the `points()` and `line()` functions, respectively. The `par()` function controls a large number of options for the `plot()` function, including margins of the plot. It is possible to produce several plots in a single pane using the `par()` function with the `mfrow` and `mfcol` options.
+
+The `plot()` function can also be used to plot `R` objects other than numeric vectors. For example, it can be used to plot linear regression fits. For different types of objects, the `plot()` function behaves differently.
+
+Check out the documentation pages of the functions `plot()`, `par()`, `legend()`, `line()` and `points()`.
+
+There are also other plot tools in `R`. For example, to draw histogram, there is the `hist()` function. Besides, many `R` packages have their own plotting utilities (packages are being discussed next).
+
+
+# `R` packages
+
+An `R` package is a collection of `R` functions and datasets. One of the chief advantages of using `R` is its collection of packages, which runs into thousands. From the repository called [CRAN](https://cran.r-project.org/), the packages can be downloaded and installed. To download and install a package in RStudio, click on the `Install` button on the `Packages` tab, and then enter the name of the package in the window that appears. The corresponding `R` code is `install.packages()`. After installation, a package needs to be loaded if we want to use the functions contained in it. This can be achieved using the functions `library()` and `require()`. Check the help pages of the functions `install.packages()`, `library()` and `require()`.
+
+
+# Demonstration in simulated data
+
+In this section, we demonstrate the procedures described above.
+
+## Linear regression: single predictor
+
+We first demonstrate linear regression using a simulated dataset with a single predictor. Assume that `$ y_i = a_0 + a_1 x_i + e_i $`, where `$ i = 1, \ldots, 30 $`, `$ e_i \sim N(0, 1) $`, `$ x_i \sim N(0, 1) $`, and `$ x_i $` and `$ e_i $` are independent. We now carry out the regression analysis and describe the `R` codes required.
+```{r}
+# Assume a_0 = 4, a_1 = 6.
+a_0 = 4
+a_1 = 6
+
+# Data generation
+e = rnorm(30, mean = 0, sd = 1)
+x = rnorm(30, mean = 0, sd = 1)
+y = a_0 + (a_1 * x) + e
+
+# Plot x and y. For a single predictor case, we can
+# construct the scatter plot of x and y. Note the
+# change of color using the 'col' option.
+plot(x, y, main = 'Scatter plot of x and y', col = 'blue')
+
+# Next we carry out regression analysis
+linear_regression_fit = lm(y ~ x)
+summary(linear_regression_fit)
+
+# Extracting the value of the adjusted R-square.
+adjR2 = summary(linear_regression_fit)[['adj.r.squared']]
+
+# Note the difference between 'writeLines' vs 'print'.
+# For 'print', there are double quotes around the
+# output, unlike in 'writeLies'.
+print(paste('Adjusted R-square is', adjR2))
+
+# Producing the regression diagnostic plots. Note how the
+# subplots are produced using the 'mfrow' option. Here,
+# mfrow = c(2,2) reserves space for a 2 x 2 matrix of
+# subplots. Also note here that the plot function produces
+# 4 plots for 'lm' objects!
+par(mfrow = c(2,2))
+plot(linear_regression_fit)
+
+# Adding the regression line in the scatter plot. We need
+# to first restore the default plot pane by setting
+# mfrow = c(1,1). Notice the 'abline' function.
+par(mfrow = c(1,1))
+plot(x, y, main = 'Scatter plot of x and y', col = 'blue')
+abline(linear_regression_fit)
+```
+
+## Linear regression: multiple predictors
+
+Here, we demonstrate linear regression with multiple predictors. Let `$ \sigma_{i j} = 0.5 + 0.5 \mathbb{I}(i = j) $` for `$ i, j = 1, 2 $` and `$ \Sigma = (\sigma_{i j})_{2 \times 2} $`. Assume that `$ y_i = a_0 + a_1 x_{1 i} + a_2 x_{2 i} + e_i $`, where `$ i = 1, \ldots, 30 $`, `$ e_i \sim N(0, 1) $`, `$ (x_{1 i}, x_{2 i}) \sim N_2((0, 0), \Sigma) $`, and `$ (x_{1 i}, x_{2 i}) $` and `$ e_i $` are independent. We proceed to carry out the regression analysis.
+```{r, message=FALSE}
+# Assume a_0 = 1, a_1 = 3 and a_2 = 5.
+a_0 = 1
+a_1 = 3
+a_2 = 5
+
+# Data generation. Note that we use the 'MASS' package here
+# for data generation; 'mvrnorm' is a function in 'MASS'.
+require(MASS)
+X = mvrnorm(30, mu = c(0, 0),
+            Sigma = matrix(c(1, 0.5, 0.5, 1), nrow = 2, ncol = 2))
+e = rnorm(30, mean = 0, sd = 1)
+y = a_0 + (X %*% matrix(c(a_1, a_2), nrow = 2, ncol = 1)) + e
+
+# Since we have three variables of interest here, we can
+# use pairwise scatterplot to graphically present them.
+# For that, we use the 'pairs' function.
+pairs(cbind(y, X), main = 'Pairwise scatter plot',
+      col = 'violet')
+
+# Next we carry out regression analysis
+linear_regression_fit = lm(y ~ X[,1] + X[,2])
+summary(linear_regression_fit)
+
+# Extracting the value of the adjusted R-square.
+adjR2 = summary(linear_regression_fit)[['adj.r.squared']]
+
+# Note the difference between 'writeLines' vs 'print'.
+# For 'print', there are double quotes around the
+# output, unlike in 'writeLies'. Also, we use the 'round'
+# function for rounding off the decimal digits.
+writeLines(paste('Adjusted R-square is', round(adjR2, 2)))
+
+# Producing the regression diagnostic plots.
+par(mfrow = c(2,2))
+plot(linear_regression_fit)
+
+# Calculation of the variance inflation factor.
+require(car)
+vif(linear_regression_fit)
+```
+
+
+## ANOVA
+
+Suppose we have a dataset of the form `$ y_{i j} = m_i + e_{i j} $`, where `$ e_{i j} \sim N(0, 1) $`, `$ i = 1, 2, 3, 4, 5 $`, `$ j = 1, 2, \ldots, 20 $` and `$ m_i $` is the mean of the `$ i $`-th class. Below, we simulate such a dataset and carry out statistical analyses on it.
+```{r}
+# Consider m_1 = 0.1, m_2 = 0.5, m_3 = 0.9, m_4 = 1.3
+# and m_5 = 1.7.
+m = c(0.1, 0.5, 0.9, 1.3, 1.7)
+
+Data = list()
+for (i in 1:5){
+  # Generate the data for the i-th class.
+  y = rnorm(20, mean = m[i], sd = 1)
+  
+  # Assign the data for the i-th class as the i-th
+  # component of the list 'Data'.
+  Data[[i]] = y
+}
+
+# Join the data vectors for the different classes to form
+# a single vector containing the full dataset, along with
+# the class identifiers as factors.
+Y = cbind(Data[[1]], rep(1, length(Data[[1]])))
+for (i in 2:5){
+  Y = rbind(Y, cbind(Data[[i]], rep(i, length(Data[[i]]))))
+}
+
+# Make the second column of Y, the class identifiers, factors.
+Y = data.frame(Y[,1], as.factor(Y[,2]))
+
+# Plot the second column of Y, a vector of factors, and the
+# first column of Y, which contains the data. Note that the
+# plot() command here produces the boxplots of the classes!
+plot(Y[,2], Y[,1])
+
+# Now plot the class identifiers, which is a vector of factors.
+# Note that it produces a barplot corresponding to the classes!
+plot(Y[,2])
+
+# There is also separate command for boxplot. The following
+# produces the boxplot corresponding to the second class.
+boxplot(Y[,1][21:40])
+
+# Now we carry out an ANOVA study.
+anovafit = aov(Y[,1] ~ Y[,2])
+summary(anovafit)
+
+# How do we extract the p-value? We can do it this way:
+pvalue = summary(anovafit)[[1]][['Pr(>F)']][[1]]
+
+# Note the writeLines() function.
+if (pvalue < 0.05)
+  writeLines('ANOVA p-value is less than 5%.')
+
+```
+
+
+## Nonparametric methods
+
+Next, we demonstrate some nonparametric tests in simulated datasets. We consider two samples: `$ y_{i j} = m_i + e_{i j} $`, where `$ e_{i j} \sim N(0, 1) $`, `$ i = 1, 2 $`, `$ j = 1, 2, \ldots, 20 $` and `$ m_i $` is the mean of the `$ i $`-th class. We carry out the Kolmogorov-Smirnov tests in this model.
+```{r}
+# Assume m_1 = 0, m_2 = 1.
+y1 = rnorm(20, 0, 1)
+y2 = rnorm(20, 1, 1)
+
+# Kolmogorov-Smirnov one-sample test; here it checks for
+# normality with mean 0 and standard deviation 1.
+k1 = ks.test(y1, 'pnorm', alternative = 'two.sided')
+writeLines(paste('p-value for y1 is:', k1$p.value))
+k2 = ks.test(y2, 'pnorm', alternative = 'two.sided')
+writeLines(paste('p-value for y2 is:', k2$p.value))
+
+# Kolmogorov-Smirnov test of normality with mean and standard
+# deviation estimated from the data.
+k2a = ks.test(y2, 'pnorm', mean(y2), sd(y2),
+              alternative = 'two.sided')
+writeLines(paste('p-value for y2 now is:', k2a$p.value))
+
+# Kolmogorov-Smirnov two-sample test; here it checks whether
+# y1 and y2 comes from the same distribution
+k3 = ks.test(y1, y2, alternative = 'two.sided')
+writeLines(paste('p-value for the two-sided test:', k3$p.value))
+
+# Q-Q plot yields a good visual indication whether the two
+# samples are from the same distribution.
+# We first compute the quantiles.
+q1 = quantile(y1, probs = seq(0, 1, 0.05), names = FALSE)
+q2 = quantile(y2, probs = seq(0, 1, 0.05), names = FALSE)
+# Now we now plot them.
+plot(q1, q2, col = 'blue', main = 'Q-Q plot')
+# We add the line y = x
+lines(q1, q1)
+```
+Next we consider the chi squared test for goodness of fit. For this, we assume that `$ P(y_i = k) = p_k $`, where `$ p_1, \ldots, p_K $` are positive probabilities with `$ \sum_{k=1}^K p_k = 1 $`, and `$ i = 1, \ldots, 100 $`. We take `$ K = 5 $`. Since the chi squared test is an asymptotic test, we consider a somewhat large sample size.
+```{r}
+# Assume p_1 = p_2 = 0.1, p_3 = p_4 = 0.25, p_5 = 0.3.
+probabilities = c(0.1, 0.1, 0.25, 0.25, 0.3)
+require(extraDistr)
+# 'rcat' is a function in the packahe 'extraDistr'.
+y = rcat(100, probabilities)
+
+# Conducting the test.
+pvalue1 = chisq.test(as.vector(table(y)), p = probabilities)$p.value
+writeLines(paste('p value of chi squared test:', pvalue1))
+
+pvalue2 = chisq.test(as.vector(table(y)), p = rep(0.2, 5))$p.value
+writeLines(paste('p value of chi squared test:', pvalue2))
+
+```
+Next, we consider the one-sample and two sample sign tests. We consider the same models as considered for Kolmogorov-Smirnov tests.
+```{r message=FALSE}
+# Assume m_1 = 0, m_2 = 1.
+y1 = rnorm(20, 0, 1)
+y2 = rnorm(20, 1, 1)
+
+# One-sample sign test; null hypothesis is that
+# the median is 'md'.
+require(BSDA)
+p1 = SIGN.test(y1, md = 0)$p.value
+writeLines(paste('p1 =', p1))
+p2 = SIGN.test(y2, md = 0)$p.value
+writeLines(paste('p2 =', p2))
+
+# Two-sample sign test; null hypothesis is that
+# the median of the population of differences is 'md'.
+p3 = SIGN.test(y1, y2, md = 0)$p.value
+writeLines(paste('p3 =', p3))
+```
+
+
+# Reproducible results
+
+When we perform any operation involving random numbers, the results are different for each run of the experiment. This is because the random numbers are different for each draw. The phenomenon makes the experimental results non-reproducible. However, since the random numbers are actually pseudo-random numbers, this problem can be mitigated by fixing the `seed` of the random number generation process in the following way:
+```{r}
+# You can put any fixed number as the 'seed'.
+s = 123
+set.seed(seed = s)
+```
+After fixing the `seed`, the generated random number sequences become identical, and therefore the outputs of the statistical investigation also become identical.
+
+# Assignments
+
+1. In the begining of your assignments, set your roll number to be the `seed`. Check whether all the subsequent outputs of your statistical analyses are the same or not. [1]
+1. *Nonparametric methods 1:* Generate a random vector `y1` of length 50 from the chi squared distribution with 10 degrees of freedom. Generate another vector `y2` of length 40 from the Gamma distribution with shape parameter 5 and scale parameter 2.
+    - Produce a Q-Q plot of `y1` and `y2`. [1]
+    - Perform a one-sample Kolmogorov-Smirnov test on `y1` with the distribution being a Gamma distribution with shape parameter 5 and scale parameter 2. Report what you have found. Now perform a one-sample Kolmogorov-Smirnov test on `y2` with the distribution being a chi squared distribution with 10 degrees of freedom. Report what you have found. [1]
+    - Perform a two-sample Kolmogorov-Smirnov test on `y1` and `y2`. [1]
+1. *Nonparametric methods 2:* For `m` taking values in `seq(-1, 1, 0.25)`, generate random vectors of length 20 from the normal distribution with `mean = m` and standard deviation 1. For each of the cases, perform a sign test on the data with the assumption that the median = 0, using a `for` loop. Report the vector of p values. [1]
+1. *Nonparametric methods 3:* Generate a random vector `x` of length 200 from the standard normal distribution. You can plot the histogram of a vector using the `hist()` command. Look up the documentation on the `hist()` command, and draw a histogram with 10 bins from `x`. Calculate the probabilities in those 10 bins under the standard normal distribution. Based on those probabilities, carry out a chi squared goodness of fit test. [5]
+1. *Regression methods:* Many `R` packages contain datasets. Get the `Boston` dataset from the package `MASS`.
+    - Build a linear model from the `Boston` dataset taking the variable `medv` as the response and everything else as predictors. (Hint: the symbol `.` can be used to denote all other variables except the response in an `R` formula; look up section 11.5 in _An Introduction to R_.) [1]
+    - Draw the pairwise scatterplots of all the variables in the `Boston` dataset. [1]
+    - Calculate the variance inflation factor for all the predictors in the linear model you have built. Do you see presence of multicollinearity? [2]
+    - If yes, drop the problematic predictor from the class of all predictors, rebuild the model, and again compute the variance inflation factors. (Hint: `y ~ . -x` means all variables in the specified dataset minus `x`is the predictor of `y`.) [2]
+    - Do you see anymore evidence of multicollinearity? If not, display the estimated coefficients, their standard errors, `t` statistics values and corresponding p values. [2]
+    - Compute the confidence intervals of the coefficients. (Hint: use the function `confint()`). [1]
+    - Predict the response at the mean of all the covariates. (Hint: use the function `predict()`). [1]
+1. *ANOVA:* Find the `InsectSprays` dataset included with your `R` installation. Build an ANOVA model taking the `count` variable as the response and the `spray` variable as the covariate.
+    - Build boxplots corresponding to the factor levels in this ANOVA model. [1]
+    - Display the sum of squares, F statistic value and its p value for this ANOVA model. [1]
+    - Plot the normal Q-Q plot for the standadized residuals for this ANOVA model. (Hint: lookup `plot.lm`; and note that `aov` is essentially same as `lm` except its wrapper.) [2]
+    - Now, build another ANOVA model taking the square root of `count` as the response and `spray` as the covariate. Plot the same normal Q-Q plot for this ANOVA model also. What do you notice? [1]
+
