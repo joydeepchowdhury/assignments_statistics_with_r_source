@@ -1,0 +1,26 @@
+{
+    "id": "53FB3E3E",
+    "path": "~/GitHub/assignments_statistics_with_r_source/R/build2.R",
+    "project_path": "R/build2.R",
+    "type": "r_source",
+    "hash": "1145590672",
+    "contents": "",
+    "dirty": false,
+    "created": 1638812852654.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "3,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1638813158,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1638813158364,
+    "read_only": false,
+    "read_only_alternatives": []
+}
