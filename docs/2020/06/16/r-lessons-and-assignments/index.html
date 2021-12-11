@@ -25,8 +25,8 @@
 
 
 
-<link rel="stylesheet" href="/css/fonts.css" media="all">
-<link rel="stylesheet" href="/css/main.css" media="all">
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
 
 
 
@@ -35,8 +35,8 @@
     <div class="wrapper">
       <header class="header">
         <nav class="nav">
-  <a href="/" class="nav-logo">
-    <img src="/images/logo.png"
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
          width="50"
          height="50"
          alt="Logo">
@@ -44,7 +44,7 @@
 
   <ul class="nav-links">
     
-    <li><a href="/about/">About</a></li>
+    <li><a href="../../../../about/">About</a></li>
     
   </ul>
 </nav>
@@ -67,7 +67,7 @@
 
     <div class="article-content">
       
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="../../../../rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 <div id="TOC">
 <ul>
@@ -131,7 +131,7 @@ y = a_0 + (a_1 * x) + e
 # construct the scatter plot of x and y. Note the
 # change of color using the &#39;col&#39; option.
 plot(x, y, main = &#39;Scatter plot of x and y&#39;, col = &#39;blue&#39;)</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre class="r"><code># Next we carry out regression analysis
 linear_regression_fit = lm(y ~ x)
 summary(linear_regression_fit)</code></pre>
@@ -140,19 +140,19 @@ summary(linear_regression_fit)</code></pre>
 ## lm(formula = y ~ x)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -2.11711 -0.53057  0.04267  0.55171  2.13358 
+##     Min      1Q  Median      3Q     Max 
+## -3.3217 -0.6073  0.0440  0.6936  3.0531 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   4.0305     0.1660   24.28   &lt;2e-16 ***
-## x             6.0064     0.1515   39.66   &lt;2e-16 ***
+## (Intercept)   4.0182     0.2306   17.43   &lt;2e-16 ***
+## x             5.9936     0.2338   25.64   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.9087 on 28 degrees of freedom
-## Multiple R-squared:  0.9825, Adjusted R-squared:  0.9819 
-## F-statistic:  1573 on 1 and 28 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 1.23 on 28 degrees of freedom
+## Multiple R-squared:  0.9591, Adjusted R-squared:  0.9577 
+## F-statistic: 657.3 on 1 and 28 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code># Extracting the value of the adjusted R-square.
 adjR2 = summary(linear_regression_fit)[[&#39;adj.r.squared&#39;]]
 
@@ -160,7 +160,7 @@ adjR2 = summary(linear_regression_fit)[[&#39;adj.r.squared&#39;]]
 # For &#39;print&#39;, there are double quotes around the
 # output, unlike in &#39;writeLies&#39;.
 print(paste(&#39;Adjusted R-square is&#39;, adjR2))</code></pre>
-<pre><code>## [1] &quot;Adjusted R-square is 0.98188461903189&quot;</code></pre>
+<pre><code>## [1] &quot;Adjusted R-square is 0.957681975204279&quot;</code></pre>
 <pre class="r"><code># Producing the regression diagnostic plots. Note how the
 # subplots are produced using the &#39;mfrow&#39; option. Here,
 # mfrow = c(2,2) reserves space for a 2 x 2 matrix of
@@ -168,14 +168,14 @@ print(paste(&#39;Adjusted R-square is&#39;, adjR2))</code></pre>
 # 4 plots for &#39;lm&#39; objects!
 par(mfrow = c(2,2))
 plot(linear_regression_fit)</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 <pre class="r"><code># Adding the regression line in the scatter plot. We need
 # to first restore the default plot pane by setting
 # mfrow = c(1,1). Notice the &#39;abline&#39; function.
 par(mfrow = c(1,1))
 plot(x, y, main = &#39;Scatter plot of x and y&#39;, col = &#39;blue&#39;)
 abline(linear_regression_fit)</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
 </div>
 <div id="linear-regression-multiple-predictors" class="section level2">
 <h2>Linear regression: multiple predictors</h2>
@@ -198,7 +198,7 @@ y = a_0 + (X %*% matrix(c(a_1, a_2), nrow = 2, ncol = 1)) + e
 # For that, we use the &#39;pairs&#39; function.
 pairs(cbind(y, X), main = &#39;Pairwise scatter plot&#39;,
       col = &#39;violet&#39;)</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code># Next we carry out regression analysis
 linear_regression_fit = lm(y ~ X[,1] + X[,2])
 summary(linear_regression_fit)</code></pre>
@@ -208,19 +208,19 @@ summary(linear_regression_fit)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -2.8557 -0.6341 -0.3170  0.6335  2.8101 
+## -1.9426 -0.6248  0.1675  0.8367  1.5500 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   0.8221     0.2289   3.592  0.00129 ** 
-## X[, 1]        2.8848     0.3647   7.910 1.67e-08 ***
-## X[, 2]        5.3321     0.2642  20.179  &lt; 2e-16 ***
+## (Intercept)   1.0106     0.2005   5.039 2.74e-05 ***
+## X[, 1]        2.8585     0.2552  11.200 1.18e-11 ***
+## X[, 2]        4.9745     0.1990  25.001  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.229 on 27 degrees of freedom
-## Multiple R-squared:  0.9703, Adjusted R-squared:  0.9681 
-## F-statistic: 441.1 on 2 and 27 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 1.082 on 27 degrees of freedom
+## Multiple R-squared:  0.9816, Adjusted R-squared:  0.9802 
+## F-statistic: 720.5 on 2 and 27 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code># Extracting the value of the adjusted R-square.
 adjR2 = summary(linear_regression_fit)[[&#39;adj.r.squared&#39;]]
 
@@ -229,16 +229,17 @@ adjR2 = summary(linear_regression_fit)[[&#39;adj.r.squared&#39;]]
 # output, unlike in &#39;writeLies&#39;. Also, we use the &#39;round&#39;
 # function for rounding off the decimal digits.
 writeLines(paste(&#39;Adjusted R-square is&#39;, round(adjR2, 2)))</code></pre>
-<pre><code>## Adjusted R-square is 0.97</code></pre>
+<pre><code>## Adjusted R-square is 0.98</code></pre>
 <pre class="r"><code># Producing the regression diagnostic plots.
 par(mfrow = c(2,2))
 plot(linear_regression_fit)</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 <pre class="r"><code># Calculation of the variance inflation factor.
-require(car)
-vif(linear_regression_fit)</code></pre>
+require(car)</code></pre>
+<pre><code>## Warning: package &#39;car&#39; was built under R version 4.1.2</code></pre>
+<pre class="r"><code>vif(linear_regression_fit)</code></pre>
 <pre><code>##   X[, 1]   X[, 2] 
-## 1.383103 1.383103</code></pre>
+## 1.379774 1.379774</code></pre>
 </div>
 <div id="anova" class="section level2">
 <h2>ANOVA</h2>
@@ -272,21 +273,21 @@ Y = data.frame(Y[,1], as.factor(Y[,2]))
 # first column of Y, which contains the data. Note that the
 # plot() command here produces the boxplots of the classes!
 plot(Y[,2], Y[,1])</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code># Now plot the class identifiers, which is a vector of factors.
 # Note that it produces a barplot corresponding to the classes!
 plot(Y[,2])</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 <pre class="r"><code># There is also separate command for boxplot. The following
 # produces the boxplot corresponding to the second class.
 boxplot(Y[,1][21:40])</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
 <pre class="r"><code># Now we carry out an ANOVA study.
 anovafit = aov(Y[,1] ~ Y[,2])
 summary(anovafit)</code></pre>
-<pre><code>##             Df Sum Sq Mean Sq F value  Pr(&gt;F)    
-## Y[, 2]       4  43.36  10.840   9.533 1.6e-06 ***
-## Residuals   95 108.03   1.137                    
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Y[, 2]       4  51.43  12.857   14.22 3.92e-09 ***
+## Residuals   95  85.88   0.904                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code># How do we extract the p-value? We can do it this way:
@@ -308,21 +309,21 @@ y2 = rnorm(20, 1, 1)
 # normality with mean 0 and standard deviation 1.
 k1 = ks.test(y1, &#39;pnorm&#39;, alternative = &#39;two.sided&#39;)
 writeLines(paste(&#39;p-value for y1 is:&#39;, k1$p.value))</code></pre>
-<pre><code>## p-value for y1 is: 0.195362081055145</code></pre>
+<pre><code>## p-value for y1 is: 0.855837889777427</code></pre>
 <pre class="r"><code>k2 = ks.test(y2, &#39;pnorm&#39;, alternative = &#39;two.sided&#39;)
 writeLines(paste(&#39;p-value for y2 is:&#39;, k2$p.value))</code></pre>
-<pre><code>## p-value for y2 is: 0.00589371617192147</code></pre>
+<pre><code>## p-value for y2 is: 0.000439193691656237</code></pre>
 <pre class="r"><code># Kolmogorov-Smirnov test of normality with mean and standard
 # deviation estimated from the data.
 k2a = ks.test(y2, &#39;pnorm&#39;, mean(y2), sd(y2),
               alternative = &#39;two.sided&#39;)
 writeLines(paste(&#39;p-value for y2 now is:&#39;, k2a$p.value))</code></pre>
-<pre><code>## p-value for y2 now is: 0.958220235613257</code></pre>
+<pre><code>## p-value for y2 now is: 0.945669675521121</code></pre>
 <pre class="r"><code># Kolmogorov-Smirnov two-sample test; here it checks whether
 # y1 and y2 comes from the same distribution
 k3 = ks.test(y1, y2, alternative = &#39;two.sided&#39;)
 writeLines(paste(&#39;p-value for the two-sided test:&#39;, k3$p.value))</code></pre>
-<pre><code>## p-value for the two-sided test: 0.174533005698069</code></pre>
+<pre><code>## p-value for the two-sided test: 0.0335416594061468</code></pre>
 <pre class="r"><code># Q-Q plot yields a good visual indication whether the two
 # samples are from the same distribution.
 # We first compute the quantiles.
@@ -332,7 +333,7 @@ q2 = quantile(y2, probs = seq(0, 1, 0.05), names = FALSE)
 plot(q1, q2, col = &#39;blue&#39;, main = &#39;Q-Q plot&#39;)
 # We add the line y = x
 lines(q1, q1)</code></pre>
-<p><img src="/post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+<p><img src="../../../../post/2020-06-16-r-lessons-and-assignments_files/figure-html/unnamed-chunk-4-1.png" width="672" />
 Next we consider the chi squared test for goodness of fit. For this, we assume that <code>$ P(y_i = k) = p_k $</code>, where <code>$ p_1, \ldots, p_K $</code> are positive probabilities with <code>$ \sum_{k=1}^K p_k = 1 $</code>, and <code>$ i = 1, \ldots, 100 $</code>. We take <code>$ K = 5 $</code>. Since the chi squared test is an asymptotic test, we consider a somewhat large sample size.</p>
 <pre class="r"><code># Assume p_1 = p_2 = 0.1, p_3 = p_4 = 0.25, p_5 = 0.3.
 probabilities = c(0.1, 0.1, 0.25, 0.25, 0.3)
@@ -345,10 +346,10 @@ y = rcat(100, probabilities)
 # Conducting the test.
 pvalue1 = chisq.test(as.vector(table(y)), p = probabilities)$p.value
 writeLines(paste(&#39;p value of chi squared test:&#39;, pvalue1))</code></pre>
-<pre><code>## p value of chi squared test: 0.190842833994831</code></pre>
+<pre><code>## p value of chi squared test: 0.700249986148699</code></pre>
 <pre class="r"><code>pvalue2 = chisq.test(as.vector(table(y)), p = rep(0.2, 5))$p.value
 writeLines(paste(&#39;p value of chi squared test:&#39;, pvalue2))</code></pre>
-<pre><code>## p value of chi squared test: 0.00107813099787656</code></pre>
+<pre><code>## p value of chi squared test: 0.0112757939473318</code></pre>
 <p>Next, we consider the one-sample and two sample sign tests. We consider the same models as considered for Kolmogorov-Smirnov tests.</p>
 <pre class="r"><code># Assume m_1 = 0, m_2 = 1.
 y1 = rnorm(20, 0, 1)
@@ -358,6 +359,7 @@ y2 = rnorm(20, 1, 1)
 # the median is &#39;md&#39;.
 require(BSDA)</code></pre>
 <pre><code>## Warning: package &#39;BSDA&#39; was built under R version 4.1.2</code></pre>
+<pre><code>## Warning: package &#39;lattice&#39; was built under R version 4.1.2</code></pre>
 <pre class="r"><code>p1 = SIGN.test(y1, md = 0)$p.value
 writeLines(paste(&#39;p1 =&#39;, p1))</code></pre>
 <pre><code>## p1 = 0.823802947998047</code></pre>
@@ -422,10 +424,10 @@ set.seed(seed = s)</code></pre>
       <footer class="footer">
         <ul class="footer-links">
           <li>
-            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
           </li>
           <li>
-            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
           </li>
         </ul>
       </footer>
@@ -446,7 +448,7 @@ set.seed(seed = s)</code></pre>
 
 
     
-<script src="/js/math-code.js"></script>
+<script src="../../../../js/math-code.js"></script>
 <script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 
