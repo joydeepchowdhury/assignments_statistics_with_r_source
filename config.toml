@@ -1,4 +1,6 @@
 baseurl = "/"
+relativeURLs = true
+publishDir = "docs"
 languageCode = "en-us"
 title = "Assignments for Statistics with R"
 theme = "hugo-lithium"
